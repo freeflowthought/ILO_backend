@@ -1,0 +1,26 @@
+1. deploy HPOT.sol, 
+    1.1 the congress will be `_msgSender()` temply
+    1.2 the mint will be `_msgSender()` temply
+
+2. deploy MintV1.sol using address of HPOT: constructor(IPRToken _token, uint256 _mintPerBlock, uint256 _startBlock)
+    2.1 the developer will be `_msgSender()`, only developer can edit this field.
+    2.2 the congress will be `_msgSender()` temply
+
+3. you can change mint permit in HPOT to address of MintV1 now, operator account should be the same as `_msgSender()` before.
+
+4. deploy AllocPointProposal.sol,
+    4.1 the congress will be `_msgSender()` temply
+
+5. deploy CongressV1.sol, using address of HPOT, MintV1 and AllocPointProposal, constructor(IPRToken _token, IMint _mint, IPProposal _allocPointProposal)
+    5.1 the developer will be `_msgSender()`.
+    5.2 the congress will be address(this) to show that no other can edit the `_permit` except itself. (In this int version, the developer can call the `updateCongress` func to set whole congress to a new one. This backdoor will dropped future, some Perpetual Proposal will instead.)
+
+6. change congress permit for HPOT, MintV1 and AllocPointProposal to the address of CongressV1, operate by the account the same as `_msgSender()` before.
+
+
+# Control flow is like following:
+
+MintV1   <----  CongressV1  <---- // AllocPointProposal [TODO--]  
+  |                 ｜
+  ↓                 ｜
+HPOT     <-------- 

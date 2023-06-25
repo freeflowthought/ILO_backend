@@ -1,2 +1,3 @@
-# ILO_backend
-Initial liquidity offering model
+# Yex-DEX
+
+**Yex-DEX** is a prototype of new generation DEX.
